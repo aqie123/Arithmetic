@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Class-Path: spring-aop-4.3.14.RELEASE.jar spring-context-support-4.3.1
+ 4.RELEASE.jar spring-context-4.3.14.RELEASE.jar spring-aspects-4.3.14
+ .RELEASE.jar spring-instrument-4.3.14.RELEASE.jar spring-beans-4.3.14
+ .RELEASE.jar spring-instrument-tomcat-4.3.14.RELEASE.jar spring-core-
+ 4.3.14.RELEASE.jar spring-jms-4.3.14.RELEASE.jar spring-jdbc-4.3.14.R
+ ELEASE.jar spring-expression-4.3.14.RELEASE.jar spring-orm-4.3.14.REL
+ EASE.jar spring-test-4.3.14.RELEASE.jar commons-logging-1.2.jar sprin
+ g-messaging-4.3.14.RELEASE.jar spring-tx-4.3.14.RELEASE.jar spring-ox
+ m-4.3.14.RELEASE.jar aopalliance-1.0.jar
+Main-Class: mySwing.Main
+

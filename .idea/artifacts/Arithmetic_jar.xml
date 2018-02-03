@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="Arithmetic:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Arithmetic_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Arithmetic.jar">
+        <element id="module-output" name="Arithmetic" />
+      </element>
+      <element id="library" level="project" name="Spring-4.3.14.RELEASE" />
+    </root>
+  </artifact>
+</component>
