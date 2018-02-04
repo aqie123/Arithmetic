@@ -24,7 +24,7 @@ public class AlgoFrame extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
-        System.out.println(getContentPane().getBounds());
+        // System.out.println(getContentPane().getBounds());
     }
 
     public AlgoFrame(String title){
@@ -35,13 +35,14 @@ public class AlgoFrame extends JFrame{
 
     public int getCanvasWidth() { return canvasWidth;}
 
-    private Circle[] circles;
-    public void render(Circle[] circles){
-        this.circles = circles;
+    private Object object;
+    public void render(Object object){
+        this.object = object;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
 
-    private class AlgoCanvas extends JPanel{// 具体绘制代码
+    // 具体绘制代码
+    private class AlgoCanvas extends JPanel{
         public AlgoCanvas(){
             super(true);
         }
@@ -49,37 +50,24 @@ public class AlgoFrame extends JFrame{
         public void paintComponent(Graphics g) {
             super.paintComponents(g);
             Graphics2D g2D = (Graphics2D)g;
-            // drawCircle((Graphics2D) g);
             // 抗锯齿
             RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g2D.addRenderingHints(hints);
+            // todo 绘制所要的数据
+            drawCircle(g2D);
+        }
+
+        private void drawCircle(Graphics2D g2D) {
             AlgoVisHelper.setStrokeWidth(g2D,5);
             AlgoVisHelper.setColor(g2D,Color.red);
-            // drawCircleWithTool(g2D);
-            for (Circle circle : circles){
-                AlgoVisHelper.strokeCircle(g2D,circle.x,circle.y,circle.getR());
+            for (Circle circle : (Circle[]) object){
+                if(circle.isFilled){
+                    AlgoVisHelper.fillCircle(g2D,circle.x,circle.y,circle.getR());
+                }else{
+                    AlgoVisHelper.strokeCircle(g2D,circle.x,circle.y,circle.getR());
+                }
             }
-        }
-
-        // 通过工具类绘制圆
-        private void drawCircleWithTool(Graphics2D g2D) {
-            AlgoVisHelper.strokeCircle(g2D,100,100,200);
-        }
-
-        // 绘制一个圆
-        private void drawCircle(Graphics2D g) {
-            // g.drawOval(50,50,300,300);
-            Graphics2D g2D = g;
-
-            int strokeWidth = 10;
-            g2D.setStroke(new BasicStroke(strokeWidth));
-            g2D.setColor(Color.blue);
-            Ellipse2D circle = new Ellipse2D.Double(50,50,300,300);  // 创建基本图形对象
-            g2D.draw(circle);
-
-            Ellipse2D solidCircle = new Ellipse2D.Double(60,60,280,280);
-            g2D.fill(solidCircle);
         }
 
         @Override
