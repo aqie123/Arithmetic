@@ -57,20 +57,10 @@ public class AlgoFrame extends JFrame{
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
-            drawCircle(g2D);
+
         }
 
-        private void drawCircle(Graphics2D g2D) {
-            AlgoVisHelper.setStrokeWidth(g2D,5);
-            AlgoVisHelper.setColor(g2D,Color.red);
-            for (Circle circle : (Circle[]) object){
-                if(circle.isFilled){
-                    AlgoVisHelper.fillCircle(g2D,circle.x,circle.y,circle.getR());
-                }else{
-                    AlgoVisHelper.strokeCircle(g2D,circle.x,circle.y,circle.getR());
-                }
-            }
-        }
+
 
         @Override
         public Dimension getPreferredSize(){

@@ -1,8 +1,8 @@
 package myMVC.controller;
 
 import myMVC.model.Circle;
+import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
-import mySwing.tools.AlgoVisHelper;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -16,65 +16,35 @@ public class AlgoVisualizer {
     private Circle[] circles;
     // 视图层
     private AlgoFrame frame;
-    // 是否开启动画
-    private boolean isAnimated = true;
+    // todo 设置自定义变量
+
 
     // 对数据和视图进行初始化
     public AlgoVisualizer(int screenWidth,int screenHeight,int N){
-        // 初始化小球数组数据
-        _initData(screenWidth, screenHeight, N);
+        // todo 初始化数据
 
         // 初始化视图frame
-        _initFrame(screenWidth, screenHeight);
-    }
-
-    private void _initFrame(int screenWidth, int screenHeight) {
         EventQueue.invokeLater(() -> {
-            // 注意 ： 初始化类成员变量
-            frame = new AlgoFrame("Welcome",screenWidth,screenHeight);
+            frame = new AlgoFrame("Welcome", screenWidth, screenHeight);
+            // TODO: 根据情况决定是否加入键盘鼠标事件监听器
             frame.addKeyListener(new AlgoKeyListener());
             frame.addMouseListener(new AlgoMouseListener());
-            new Thread(()->{
-                run(screenWidth, screenHeight);
+            new Thread(() -> {
+                run();
             }).start();
         });
     }
 
-    private void _initData(int screenWidth, int screenHeight, int N) {
-        circles = new Circle[N];
-        int R = 50;
-        for(int i = 0;i<N;i++){
-            int x = (int) Math.random()*(screenWidth-2*R) + R;
-            int y = (int) Math.random()*(screenHeight-2*R) + R;
-            int vx = (int)(Math.random()*15)-5;
-            int vy = (int)(Math.random()*15)-5;
-            circles[i] = new Circle(x,y,R,vx,vy);
-        }
-    }
-
     // 小球运动逻辑
-    private void run(int screenWidth, int screenHeight) {
-        while(true){
-            // 绘制数据
-            frame.render(circles);
-            AlgoVisHelper.pause(20);
-
-            // 更新数据
-            if(isAnimated){
-                for(Circle circle : circles){
-                    circle.move(0,0,screenWidth,screenHeight);
-                }
-            }
-        }
+    private void run() {
+        // todo 编写自己的动画逻辑
     }
 
     // 添加键盘监听事件
     private class AlgoKeyListener extends KeyAdapter{
         @Override
         public void keyReleased(KeyEvent e) {
-            if(e.getKeyChar() == ' '){
-                isAnimated = !isAnimated;
-            }
+            // todo 键盘释放事件
         }
     }
 
@@ -82,13 +52,7 @@ public class AlgoVisualizer {
     private class AlgoMouseListener extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
-            // 获取menuBar相应高度
-            e.translatePoint(0,-(frame.getBounds().height -frame.getCanvasHeight()));
-            for (Circle circle : circles){
-                if(circle.contain(e.getPoint())){
-                    circle.isFilled = !circle.isFilled;
-                }
-            }
+           // todo 鼠标按压事件
         }
     }
 }
