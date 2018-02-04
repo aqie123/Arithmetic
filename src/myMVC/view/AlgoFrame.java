@@ -2,7 +2,8 @@ package myMVC.view;
 
 
 import myMVC.model.Circle;
-import mySwing.tools.AlgoVisHelper;
+import myMVC.tools.AlgoVisHelper;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,7 @@ public class AlgoFrame extends JFrame{
 
     public int getCanvasWidth() { return canvasWidth;}
 
+    // todo 设置自己的数据
     private Object object;
     public void render(Object object){
         this.object = object;
