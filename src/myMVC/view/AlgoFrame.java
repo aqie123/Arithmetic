@@ -58,6 +58,22 @@ public class AlgoFrame extends JFrame{
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
 
+            int[] money = (int[])object;
+            // 绘制实心矩形
+            int w = canvasWidth / money.length;     // 每个数据宽度,固定
+            for(int i = 0;i<money.length;i++){
+                // +1 是每个格子中间距离  (w-1)矩形实际宽度,留出空位
+                if(money[i] > 0){
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Blue);
+                    AlgoVisHelper.fillRectangle(g2D,
+                            i*w+1, canvasHeight/2 - money[i], w-1, money[i]);
+                }else{      // 负债
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
+                    AlgoVisHelper.fillRectangle(g2D,
+                            i*w+1, canvasHeight/2, w-1, -money[i]);
+                }
+
+            }
         }
 
 
