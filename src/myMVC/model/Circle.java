@@ -1,7 +1,10 @@
 package myMVC.model;
 
+import org.springframework.stereotype.Repository;
+
 import java.awt.*;
 
+@Repository
 public class Circle {
     public int x;
     public int y;
