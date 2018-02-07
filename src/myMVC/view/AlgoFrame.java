@@ -67,7 +67,7 @@ public class AlgoFrame extends JFrame{
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Blue);
                     AlgoVisHelper.fillRectangle(g2D,
                             i*w+1, canvasHeight/2 - money[i], w-1, money[i]);
-                }else{      // 负债
+                }else if(money[i] < 0){      // 负债
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
                     AlgoVisHelper.fillRectangle(g2D,
                             i*w+1, canvasHeight/2, w-1, -money[i]);
