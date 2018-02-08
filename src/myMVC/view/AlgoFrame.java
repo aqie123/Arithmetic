@@ -2,6 +2,7 @@ package myMVC.view;
 
 
 import myMVC.model.Circle;
+import myMVC.model.MonteCarloPiData;
 import myMVC.tools.AlgoVisHelper;
 
 
@@ -37,9 +38,9 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private Object object;
-    public void render(Object object){
-        this.object = object;
+    private MonteCarloPiData data;
+    public void render(MonteCarloPiData data){
+        this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
 
@@ -53,13 +54,30 @@ public class AlgoFrame extends JFrame{
             super.paintComponents(g);
             Graphics2D g2D = (Graphics2D)g;
             // 抗锯齿
-            RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+            RenderingHints hints = new RenderingHints(
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON
+            );
+            hints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
+            // 绘制圆形和正方形
+            AlgoVisHelper.setStrokeWidth(g2D,3);
+            AlgoVisHelper.setColor(g2D,AlgoVisHelper.Blue);
+            Circle circle = data.getCircle();
+            AlgoVisHelper.strokeCircle(g2D,circle.getX(),circle.getY(),circle.getR());
 
+            for(int i = 0; i < data.getPointsNumber(); i++){
+                Point p = data.getPoint(i);
+                if(circle.contain(p)){
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
+                }else {
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Green);
+                }
+                // 绘制点
+                AlgoVisHelper.fillCircle(g2D,p.x,p.y,3);
+            }
         }
-
 
 
         @Override

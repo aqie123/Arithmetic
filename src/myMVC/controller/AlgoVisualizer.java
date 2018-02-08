@@ -1,6 +1,7 @@
 package myMVC.controller;
 
 import myMVC.model.Circle;
+import myMVC.model.MonteCarloPiData;
 import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
 
@@ -12,17 +13,23 @@ import java.awt.event.MouseEvent;
 
 
 public class AlgoVisualizer {
+    private static int DELAY = 40;
     // 数据 存储所有circle信息
-    private Circle[] circles;
+    private MonteCarloPiData data;
     // 视图层
     private AlgoFrame frame;
     // todo 设置自定义变量
-
+    private int N;
 
     // 对数据和视图进行初始化
     public AlgoVisualizer(int screenWidth,int screenHeight,int N){
         // todo 初始化数据
-
+        if(screenHeight != screenWidth){
+            throw new IllegalArgumentException("This Demo must be run in square ");
+        }
+        this.N = N;
+        Circle circle = new Circle(screenWidth/2, screenHeight/2, screenWidth/2);
+        data = new MonteCarloPiData(circle);
         // 初始化视图frame
         EventQueue.invokeLater(() -> {
             frame = new AlgoFrame("Welcome", screenWidth, screenHeight);
@@ -35,9 +42,18 @@ public class AlgoVisualizer {
         });
     }
 
-    // 小球运动逻辑
+    // todo 编写自己的动画逻辑
     private void run() {
-        // todo 编写自己的动画逻辑
+        for(int i = 0;i< N;i++){
+            if(i % 100 == 0) {
+                frame.render(data);
+                AlgoVisHelper.pause(DELAY);
+                System.out.println(data.simulatePI());
+            }
+            int x = (int)(Math.random() * frame.getCanvasWidth());
+            int y = (int)(Math.random() * frame.getCanvasHeight());
+            data.addPoint(new Point(x, y));
+        }
     }
 
     // 添加键盘监听事件

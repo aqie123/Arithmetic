@@ -11,6 +11,11 @@ public class Circle {
     public int vy;
     public boolean isFilled = false;
 
+    public Circle(int x, int y, int r){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+    }
     public Circle(int x, int y, int r, int vx, int vy){
         this.x = x;
         this.y = y;
@@ -19,7 +24,15 @@ public class Circle {
         this.vy = vy;
     }
 
-    public int getR(){return r;}
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
+    public int getR() {
+        return r;
+    }
 
     public void move(int minx, int miny, int maxx, int maxy){
         x += vx;
@@ -38,6 +51,7 @@ public class Circle {
 
     // 检测点是否在圆内
     public boolean contain(Point p){
-        return (x - p.x) * (x - p.x) + (y - p.y) * (y - p.y) <= r * r;
+       // return (x - p.x) * (x - p.x) + (y - p.y) * (y - p.y) <= r * r;
+        return Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) <= r*r;
     }
 }
