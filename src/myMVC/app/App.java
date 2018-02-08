@@ -15,6 +15,7 @@ public class App {
         int N = 20000;
         AlgoVisualizer vis = new AlgoVisualizer(screenWidth,screenHeight,N);
     }
+
     private static void simulateViaCommandLine(){
         int squareSide = 800;
         int N = 100000000;
