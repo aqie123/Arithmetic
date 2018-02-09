@@ -44,7 +44,7 @@ public class AlgoVisHelper {
         g.fill(circle);
     }
 
-    // 绘制矩形 (左上角坐标信息)
+    // 绘制矩形 (左上角坐标信息，矩形 宽，高)
     public static void strokeRectangle(Graphics2D g, int x, int y, int w, int h){
         Rectangle2D rectangle = new Rectangle2D.Double(x, y, w, h);
         g.draw(rectangle);

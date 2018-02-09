@@ -2,6 +2,7 @@ package myMVC.view;
 
 
 import myMVC.model.Circle;
+import myMVC.model.SelectionSortData;
 import myMVC.tools.AlgoVisHelper;
 
 
@@ -37,9 +38,9 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private Object object;
-    public void render(Object object){
-        this.object = object;
+    private SelectionSortData data;
+    public void render(SelectionSortData data){
+        this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
 
@@ -57,7 +58,21 @@ public class AlgoFrame extends JFrame{
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
-
+            int w = canvasWidth/data.N();  // 每个数据的宽度
+            for (int i = 0;i < data.N();i++){
+                if(i < data.orderIndex){
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Red);
+                }else {
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Grey);
+                }
+                if(i == data.currentCompareIndex) {
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.LightBlue);
+                }
+                if(i == data.currentMinIndex) {
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Indigo);
+                }
+                AlgoVisHelper.fillRectangle(g2D,i*w,canvasHeight-data.get(i),w - 1,data.get(i));
+            }
         }
 
 
