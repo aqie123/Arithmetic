@@ -6,6 +6,9 @@
         1.AlgoCanvas类 绘制矩形和圆
         2.AlgoVisualizer类 run
 二：拉斯维加斯算法
-三：
+三：相关词汇
     1.图形用户界面 (Graphical User Interface)
     2.CLI (command-line interface，命令行界面)
+四：三门问题(Money Hall Problem)
+    1.
+    2.
