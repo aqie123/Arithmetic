@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
     // 数据 存储所有circle信息
-    private Circle[] circles;
+    private Object[] objects;
     // 视图层
     private AlgoFrame frame;
     // todo 设置自定义变量
@@ -35,9 +35,9 @@ public class AlgoVisualizer {
         });
     }
 
-    // 小球运动逻辑
+    // todo 编写自己的动画逻辑
     private void run() {
-        // todo 编写自己的动画逻辑
+
     }
 
     // 添加键盘监听事件
