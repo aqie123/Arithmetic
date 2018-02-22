@@ -43,7 +43,16 @@ public class AlgoVisualizer {
     // 归并排序
     private void run(){
         setData(-1,-1,-1);
-        mergeSort(0,data.N()-1);
+        // 方式一：自顶向下
+        // mergeSort(0,data.N()-1);
+        // 方式二：自下向上
+        for(int sz = 1;sz < data.N(); sz *= 2){
+            for(int i = 0;i < data.N() - sz;i += sz+sz){
+                // 对 arr[i...i+sz-1] 和 arr[i+sz...i+2*sz-1] 进行归并
+                merge(i,i+sz-1,Math.min(i+sz+sz-1,data.N()-1));
+            }
+        }
+        setData(0,data.N()-1,data.N()-1);
     }
 
     private void mergeSort(int l,int r){
