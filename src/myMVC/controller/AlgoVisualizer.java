@@ -12,29 +12,22 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 
 public class AlgoVisualizer {
     private static int DELAY = 30;
-    // (选择 插入排序)数据
-    private SelectionSortData data;
 
-    private MergeSortData mergeData;
+    private MergeSortData data;
 
     // 视图层
     private AlgoFrame frame;
     // todo 设置自定义变量
 
-
-    // 对数据和视图进行初始化
+    // 归并排序
     public AlgoVisualizer(int screenWidth,int screenHeight,int N){
-        this(screenWidth,screenHeight,N,SelectionSortData.Type.Default);
-    }
-
-    // 插入排序,可传入近乎有序数组
-    public AlgoVisualizer(int screenWidth,int screenHeight,int N,SelectionSortData.Type dataType){
         // todo 初始化数据
-        data = new SelectionSortData(N,screenHeight,dataType);
+        data = new MergeSortData(N,screenHeight);
         // 初始化视图frame
         EventQueue.invokeLater(() -> {
             frame = new AlgoFrame("Selection Sort Visualization", screenWidth, screenHeight);
@@ -42,71 +35,57 @@ public class AlgoVisualizer {
             frame.addKeyListener(new AlgoKeyListener());
             frame.addMouseListener(new AlgoMouseListener());
             new Thread(() -> {
-                // selectRun();
-                insertRun();
+                run();
             }).start();
         });
     }
 
+    // 归并排序
+    private void run(){
+        setData(-1,-1,-1);
+        mergeSort(0,data.N()-1);
+    }
 
-    // 选择排序逻辑
-    private void selectRun() {
-        setData(0, -1, -1);
-        for(int i = 0;i < data.N()-1;i++){
-            int minIndex = i;
-            setData(i, -1, minIndex);
-            // 当前比较索引 j
-            for(int j = i + 1;j < data.N();j++){
-                setData(i,j,minIndex);
-                if(data.get(j) < data.get(minIndex)){
-                    minIndex = j;
-                    setData(i,j,minIndex);
-                }
-            }
-            data.swap(i,minIndex);
-            setData(i+1,-1,-1);
+    private void mergeSort(int l,int r){
+        if(l >= r){
+            return;
         }
-        frame.render(data);
-        AlgoVisHelper.pause(DELAY);
-    }
-    /**
-     * 选择排序
-     * @param orderIndex    (顺位索引)
-     * @param currentCompareIndex   (当前比较的索引)
-     * @param currentMinIndex   (当前最小值索引)
-     */
-    private void setData(int orderIndex,int currentCompareIndex,int currentMinIndex){
-        data.orderIndex = orderIndex;
-        data.currentCompareIndex = currentCompareIndex;
-        data.currentMinIndex = currentMinIndex;
-        frame.render(data);
-        AlgoVisHelper.pause(DELAY);
+        setData(l,r,-1);
+        int mid = (l + r)/2;
+        mergeSort(l,mid);
+        mergeSort(mid+1,r);
+        merge(l,mid,r);
     }
 
-    /**
-     * 插入排序逻辑
-     */
-    private void insertRun(){
-        setInsertData(0, -1);
-        for(int i = 0; i < data.N(); i++){
-            setInsertData(i, i);
-            // 比前面元素小,和前面元素交换位置
-            for (int j = i;j > 0 && data.get(j) < data.get(j - 1);j--){
-                data.swap(j,j-1);
-                setInsertData(i+1,j - 1);
+    private void merge(int l,int mid,int r){
+        int[] aux = Arrays.copyOfRange(data.numbers,l,r+1);
+        // 初始化，i指向左半部分的起始索引位置l；j指向右半部分起始索引位置mid+1
+        int i = l, j = mid + 1;
+        for(int k = l;k <= r; k++){
+            if(i > mid){
+                data.numbers[k] = aux[j-l];
+                j++;
+            }else if(j > r){   // 如果右半部分元素已经全部处理完毕
+                data.numbers[k] = aux[i - l];
+                i++;
+            }else if(aux[i-l] < aux[j-l]){  // 左半部分所指元素 < 右半部分所指元素
+                data.numbers[k] = aux[i-l];
+                i++;
+            }else{
+                data.numbers[k] = aux[j-l];
+                j++;
             }
+            setData(l, r, k);
         }
-        setInsertData(data.N(), -1);
     }
 
-    // 插入排序
-    private void setInsertData(int orderIndex,int currentIndex){
-        data.orderIndex = orderIndex;
-        data.currentIndex = currentIndex;
+    private void setData(int l, int r, int mergeIndex){
+        data.l = l;
+        data.r = r;
+        data.mergeIndex = mergeIndex;
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
-
 
     // 添加键盘监听事件
     private class AlgoKeyListener extends KeyAdapter{

@@ -2,6 +2,7 @@ package myMVC.view;
 
 
 import myMVC.model.Circle;
+import myMVC.model.MergeSortData;
 import myMVC.model.SelectionSortData;
 import myMVC.model.SortData;
 import myMVC.tools.AlgoVisHelper;
@@ -39,8 +40,8 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private SelectionSortData data;
-    public void render(SelectionSortData data){
+    private MergeSortData data;
+    public void render(MergeSortData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
@@ -60,7 +61,19 @@ public class AlgoFrame extends JFrame{
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
             // selectionPaint(g2D);
-            insertionPaint(g2D);
+            // insertionPaint(g2D);
+            int w = canvasWidth/data.N();
+            for (int i = 0;i < data.N();i++){
+                if(i >= data.l && i <= data.r){
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Green);
+                }else {
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Grey);
+                }
+                if(i >= data.l && i <= data.mergeIndex){
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
+                }
+                AlgoVisHelper.fillRectangle(g2D, i * w,canvasHeight - data.get(i), w - 1,data.get(i));
+            }
         }
 
         // 插入排序绘制

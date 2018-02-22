@@ -9,20 +9,7 @@ public class App {
         int screenWidth = 800;
         int screenHeight = 800;
         int N = 100;
-        // 选择排序可视化
-        // select(screenWidth, screenHeight, N);
-
-        // 插入排序可视化
-        insert(screenWidth, screenHeight, N);
-    }
-
-    // 近乎有序的数组进行插入排序
-    private static void insert(int screenWidth, int screenHeight, int n) {
-        AlgoVisualizer vis = new AlgoVisualizer(screenWidth,screenHeight, n,
-                SelectionSortData.Type.NearlyOrdered);
-    }
-
-    private static void select(int screenWidth, int screenHeight, int n) {
-        AlgoVisualizer vis = new AlgoVisualizer(screenWidth,screenHeight, n);
+        // 归并排序
+        AlgoVisualizer vis = new AlgoVisualizer(screenWidth, screenHeight, N);
     }
 }
