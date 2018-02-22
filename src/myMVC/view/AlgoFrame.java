@@ -3,6 +3,7 @@ package myMVC.view;
 
 import myMVC.model.Circle;
 import myMVC.model.SelectionSortData;
+import myMVC.model.SortData;
 import myMVC.tools.AlgoVisHelper;
 
 
@@ -59,8 +60,13 @@ public class AlgoFrame extends JFrame{
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
             // selectionPaint(g2D);
+            insertionPaint(g2D);
+        }
+
+        // 插入排序绘制
+        private void insertionPaint(Graphics2D g2D) {
             int w = canvasWidth/data.N();
-            for(int i = 0; i< data.N();i++){
+            for(int i = 0; i < data.N();i++){
                 if(i < data.orderIndex){
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
                 }else {

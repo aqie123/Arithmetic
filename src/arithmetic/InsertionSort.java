@@ -7,6 +7,7 @@ package arithmetic;
 public class InsertionSort {        // 优化后
     private InsertionSort(){}
 
+    // 现将第i个元素保存起来,不断将其他元素向后移动
     public static void sort(Comparable[] arr){
         int n = arr.length;
         for(int i = 0;i < n;i++){

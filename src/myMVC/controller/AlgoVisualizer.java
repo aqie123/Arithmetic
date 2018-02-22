@@ -1,7 +1,9 @@
 package myMVC.controller;
 
 import myMVC.model.Circle;
+import myMVC.model.MergeSortData;
 import myMVC.model.SelectionSortData;
+import myMVC.model.SortData;
 import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
 
@@ -14,8 +16,11 @@ import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
     private static int DELAY = 30;
-    // 数据
+    // (选择 插入排序)数据
     private SelectionSortData data;
+
+    private MergeSortData mergeData;
+
     // 视图层
     private AlgoFrame frame;
     // todo 设置自定义变量
@@ -26,6 +31,7 @@ public class AlgoVisualizer {
         this(screenWidth,screenHeight,N,SelectionSortData.Type.Default);
     }
 
+    // 插入排序,可传入近乎有序数组
     public AlgoVisualizer(int screenWidth,int screenHeight,int N,SelectionSortData.Type dataType){
         // todo 初始化数据
         data = new SelectionSortData(N,screenHeight,dataType);
@@ -41,6 +47,7 @@ public class AlgoVisualizer {
             }).start();
         });
     }
+
 
     // 选择排序逻辑
     private void selectRun() {
@@ -62,6 +69,19 @@ public class AlgoVisualizer {
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
+    /**
+     * 选择排序
+     * @param orderIndex    (顺位索引)
+     * @param currentCompareIndex   (当前比较的索引)
+     * @param currentMinIndex   (当前最小值索引)
+     */
+    private void setData(int orderIndex,int currentCompareIndex,int currentMinIndex){
+        data.orderIndex = orderIndex;
+        data.currentCompareIndex = currentCompareIndex;
+        data.currentMinIndex = currentMinIndex;
+        frame.render(data);
+        AlgoVisHelper.pause(DELAY);
+    }
 
     /**
      * 插入排序逻辑
@@ -79,26 +99,14 @@ public class AlgoVisualizer {
         setInsertData(data.N(), -1);
     }
 
-    /**
-     * 选择排序
-     * @param orderIndex    (顺位索引)
-     * @param currentCompareIndex   (当前比较的索引)
-     * @param currentMinIndex   (当前最小值索引)
-     */
-    private void setData(int orderIndex,int currentCompareIndex,int currentMinIndex){
-        data.orderIndex = orderIndex;
-        data.currentCompareIndex = currentCompareIndex;
-        data.currentMinIndex = currentMinIndex;
-        frame.render(data);
-        AlgoVisHelper.pause(DELAY);
-    }
-
+    // 插入排序
     private void setInsertData(int orderIndex,int currentIndex){
         data.orderIndex = orderIndex;
         data.currentIndex = currentIndex;
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
+
 
     // 添加键盘监听事件
     private class AlgoKeyListener extends KeyAdapter{

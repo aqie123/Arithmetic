@@ -5,19 +5,20 @@ import java.util.Arrays;
 /**
  *  生成要排序的数组
  */
-public class SelectionSortData {
+public class SelectionSortData implements SortData{
     private int[] numbers;
 
+    // 枚举型变量测试 近乎有序数组插入排序
     public  enum Type{
         Default,
         NearlyOrdered
     }
 
-    // 有序的索引, [0,orderIndex) 有序的,前闭后开
+    // 有序的索引, [0,orderIndex) 有序的,前闭后开 (插入)
     public int orderIndex = -1;
     public int currentIndex = -1;
 
-    // 当前找到的最小值索引
+    // 当前找到的最小值索引 (选择)
     public int currentMinIndex = -1;
 
     // 当前正在比较的元素索引
@@ -27,6 +28,7 @@ public class SelectionSortData {
         this(N,randomBound,Type.Default);
     }
 
+    // 选择排序,插入排序通用的排序数据
     public SelectionSortData(int N,int randomBound,Type dataType){
         numbers = new int[N];
         for(int i = 0;i < N;i++){
