@@ -1,7 +1,6 @@
 package myMVC.view;
 
-
-import myMVC.model.HeapSortData;
+import maze.processMaze.MazeData;
 import myMVC.tools.AlgoVisHelper;
 
 
@@ -36,8 +35,8 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private HeapSortData data;
-    public void render(HeapSortData data){
+    private MazeData data;
+    public void render(MazeData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
@@ -54,19 +53,23 @@ public class AlgoFrame extends JFrame{
             // 抗锯齿
             RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
+            hints.put(RenderingHints.KEY_RENDERING,
+                    RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
-            int w = canvasWidth/data.N();
-            for(int i = 0 ; i < data.N() ; i ++ ) {
-                if ( i >= data.heapIndex)
-                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Red);
-                else
-                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Grey);
-
-                AlgoVisHelper.fillRectangle(g2D, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
+            int w = canvasWidth/data.getM();
+            int h = canvasHeight/data.getN();
+            for(int i = 0;i < data.getN();i++){
+                for(int j = 0;j < data.getM();j++){
+                    if(data.getMaze(i,j) == MazeData.WALL){
+                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
+                    }else{
+                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.White);
+                    }
+                    AlgoVisHelper.fillRectangle(g2D, j * w, i * h, w, h);
+                }
             }
         }
-
 
 
         @Override

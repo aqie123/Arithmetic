@@ -1,6 +1,6 @@
 package myMVC.controller;
 
-import myMVC.model.HeapSortData;
+import maze.processMaze.MazeData;
 import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
 
@@ -14,16 +14,19 @@ import java.awt.event.MouseEvent;
 public class AlgoVisualizer {
     private static int DELAY = 30;
 
-    private HeapSortData data;
+    private MazeData data;
 
     // 视图层
     private AlgoFrame frame;
     // todo 设置自定义变量
+    private static int blockSide = 8;
 
     // 堆排序
-    public AlgoVisualizer(int screenWidth,int screenHeight,int N){
+    public AlgoVisualizer(String mazeFile){
         // todo 初始化数据
-        data = new HeapSortData(N,screenHeight);
+        data = new MazeData(mazeFile);
+        int screenWidth = data.getM() * blockSide;
+        int screenHeight = data.getN() * blockSide;
         // 初始化视图frame
         EventQueue.invokeLater(() -> {
             frame = new AlgoFrame("Heap Sort Visualization", screenWidth, screenHeight);
@@ -37,43 +40,14 @@ public class AlgoVisualizer {
     }
 
     public void run(){
-        setData(data.N());
-
-        // 建堆
-        for( int i = (data.N()-1-1)/2 ; i >= 0 ; i -- ){
-            shiftDown(data.N(), i);
-        }
-
-        // 堆排序
-        for( int i = data.N()-1; i > 0 ; i-- ){
-            data.swap(0, i);
-            shiftDown(i, 0);
-            setData(i);
-        }
-
-        setData(0);
+        setData();
     }
 
-    private void shiftDown(int n,int k){
-        while( 2*k+1 < n ){
-            int j = 2*k+1;
-            if( j+1 < n && data.get(j+1) > data.get(j) )
-                j += 1;
-
-            if( data.get(k) >= data.get(j) )
-                break;
-
-            data.swap(k, j);
-            setData(data.heapIndex);
-            k = j;
-        }
-    }
-
-    private void setData(int heapIndex){
-        data.heapIndex = heapIndex;
+    private void setData(){
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
+
 
     // 添加键盘监听事件
     private class AlgoKeyListener extends KeyAdapter{
