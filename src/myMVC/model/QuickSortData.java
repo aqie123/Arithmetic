@@ -1,6 +1,13 @@
 package myMVC.model;
 
+import java.util.Arrays;
+
 public class QuickSortData {
+    public enum Type{
+        Default,
+        NearlyOrdered,      // 近乎有序
+        Identical           // 几乎一致数据
+    }
     private int[] numbers;
     public int l, r;
     public boolean[] fixedPivots;   // 是否当过标定点
@@ -13,14 +20,43 @@ public class QuickSortData {
     public int currentMinIndex = -1;
     public int currentCompareIndex = -1;
 
-    public QuickSortData(int N, int randomBound){
+    // 双路快排
+    public int curL,curR;
+
+    public QuickSortData(int N,int randomBound){
+        this(N, randomBound, Type.Default);
+    }
+    public QuickSortData(int N, int randomBound,Type dataType){
 
         numbers = new int[N];
         fixedPivots = new boolean[N];
 
-        for( int i = 0 ; i < N ; i ++) {
+        /*for( int i = 0 ; i < N ; i ++) {
             numbers[i] = (int)(Math.random()*randomBound) + 1;
             fixedPivots[i] = false;
+        }*/
+        // 生成一致的数组
+        int lBound = 1;
+        int rBound = randomBound;
+        if(dataType == Type.Identical){
+            int avgNumber = (lBound + rBound) / 2;
+            lBound = avgNumber;
+            rBound = avgNumber;
+        }
+        for( int i = 0 ; i < N ; i ++) {
+            numbers[i] = (int)(Math.random()*(rBound-lBound+1)) + lBound;
+            fixedPivots[i] = false;
+        }
+
+        // 生成近乎有序数组
+        if(dataType == Type.NearlyOrdered){
+            Arrays.sort(numbers);
+            int swapTime = (int)(0.01*N);
+            for(int i = 0 ; i < swapTime; i ++){
+                int a = (int)(Math.random()*N);
+                int b = (int)(Math.random()*N);
+                swap(a, b);
+            }
         }
 
     }

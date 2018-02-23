@@ -73,6 +73,12 @@ public class AlgoFrame extends JFrame{
                 if(i == data.curElement){   // 当前正在处理元素
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
                 }
+                // 双路快排
+                if( i >= data.l + 1 && i <= data.curL)
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.LightBlue);
+                if( i >= data.curR && i <= data.r)
+                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.LightBlue);
+
                 if(data.fixedPivots[i]){    // 曾经当过标定点
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
                 }
