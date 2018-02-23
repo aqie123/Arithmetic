@@ -11,14 +11,6 @@ public class App {
         int screenHeight = 800;
         int N = 100;
         // 默认
-        // AlgoVisualizer vis = new AlgoVisualizer(screenWidth, screenHeight, N);
-
-        // 快速排序( 针对近乎有序数组)
-        /*AlgoVisualizer vis = new AlgoVisualizer(screenWidth, screenHeight, N,
-                QuickSortData.Type.NearlyOrdered);*/
-
-        // 快排，近乎一致数组
-        AlgoVisualizer vis = new AlgoVisualizer(screenWidth, screenHeight, N,
-                QuickSortData.Type.Identical);
+        AlgoVisualizer vis = new AlgoVisualizer(screenWidth, screenHeight, N);
     }
 }

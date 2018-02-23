@@ -1,13 +1,12 @@
 package myMVC.view;
 
 
-import myMVC.model.*;
+import myMVC.model.HeapSortData;
 import myMVC.tools.AlgoVisHelper;
 
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 
 public class AlgoFrame extends JFrame{
     private int canvasWidth;
@@ -37,8 +36,8 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private QuickSortData data;
-    public void render(QuickSortData data){
+    private HeapSortData data;
+    public void render(HeapSortData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
@@ -57,70 +56,18 @@ public class AlgoFrame extends JFrame{
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g2D.addRenderingHints(hints);
             // todo 绘制所要的数据
-            // selectionPaint(g2D);
-            // insertionPaint(g2D);
             int w = canvasWidth/data.N();
-            for (int i = 0;i < data.N();i++){
-                if(i >= data.l && i <= data.r){     // 正在处理区间
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Green);
-                }else {
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Grey);
-                }
-
-                if(i == data.curPivot){     // 标定点
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Indigo);
-                }
-                if(i == data.curElement){   // 当前正在处理元素
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
-                }
-                // 双路快排
-                if( i >= data.l + 1 && i <= data.curL)
-                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.LightBlue);
-                if( i >= data.curR && i <= data.r)
-                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.LightBlue);
-
-                if(data.fixedPivots[i]){    // 曾经当过标定点
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
-                }
-                AlgoVisHelper.fillRectangle(g2D, i * w,canvasHeight - data.get(i), w - 1,data.get(i));
-            }
-        }
-
-        // 插入排序绘制
-        private void insertionPaint(Graphics2D g2D) {
-            int w = canvasWidth/data.N();
-            for(int i = 0; i < data.N();i++){
-                if(i < data.orderIndex){
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
-                }else {
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Grey);
-                }
-                if(i == data.currentIndex){
-                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
-                }
-                AlgoVisHelper.fillRectangle(g2D,i * w, canvasHeight - data.get(i),
-                        w-1,data.get(i));
-            }
-        }
-
-        // 选择排序绘制
-        private void selectionPaint(Graphics2D g2D) {
-            int w = canvasWidth/data.N();  // 每个数据的宽度
-            for (int i = 0;i < data.N();i++){
-                if(i < data.orderIndex){    // 已经排序索引(前闭后开)
+            for(int i = 0 ; i < data.N() ; i ++ ) {
+                if ( i >= data.heapIndex)
                     AlgoVisHelper.setColor(g2D, AlgoVisHelper.Red);
-                }else {
+                else
                     AlgoVisHelper.setColor(g2D, AlgoVisHelper.Grey);
-                }
-                if(i == data.currentCompareIndex) {
-                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.LightBlue);
-                }
-                if(i == data.currentMinIndex) {
-                    AlgoVisHelper.setColor(g2D, AlgoVisHelper.Indigo);
-                }
-                AlgoVisHelper.fillRectangle(g2D,i*w,canvasHeight-data.get(i),w - 1,data.get(i));
+
+                AlgoVisHelper.fillRectangle(g2D, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
             }
         }
+
+
 
         @Override
         public Dimension getPreferredSize(){
