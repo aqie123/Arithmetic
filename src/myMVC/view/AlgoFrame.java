@@ -1,10 +1,7 @@
 package myMVC.view;
 
 
-import myMVC.model.Circle;
-import myMVC.model.MergeSortData;
-import myMVC.model.SelectionSortData;
-import myMVC.model.SortData;
+import myMVC.model.*;
 import myMVC.tools.AlgoVisHelper;
 
 
@@ -40,8 +37,8 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private MergeSortData data;
-    public void render(MergeSortData data){
+    private QuickSortData data;
+    public void render(QuickSortData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
@@ -64,12 +61,19 @@ public class AlgoFrame extends JFrame{
             // insertionPaint(g2D);
             int w = canvasWidth/data.N();
             for (int i = 0;i < data.N();i++){
-                if(i >= data.l && i <= data.r){
+                if(i >= data.l && i <= data.r){     // 正在处理区间
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Green);
                 }else {
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Grey);
                 }
-                if(i >= data.l && i <= data.mergeIndex){
+
+                if(i == data.curPivot){     // 标定点
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.Indigo);
+                }
+                if(i == data.curElement){   // 当前正在处理元素
+                    AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
+                }
+                if(data.fixedPivots[i]){    // 曾经当过标定点
                     AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
                 }
                 AlgoVisHelper.fillRectangle(g2D, i * w,canvasHeight - data.get(i), w - 1,data.get(i));

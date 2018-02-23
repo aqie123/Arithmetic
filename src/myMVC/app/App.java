@@ -9,7 +9,7 @@ public class App {
         int screenWidth = 800;
         int screenHeight = 800;
         int N = 100;
-        // 归并排序
+        // 快速排序
         AlgoVisualizer vis = new AlgoVisualizer(screenWidth, screenHeight, N);
     }
 }

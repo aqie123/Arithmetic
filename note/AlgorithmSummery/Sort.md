@@ -10,18 +10,21 @@
     2.交换
     3.比较
 三：冒泡排序 BubbleSort
-    1.
+    1.左右两两交换
 四：插入排序(手牌) InsertionSort
     1.优化：不交换数据,使用数据移动方式
     2.特性：对近乎有序的数组,插入排序算法进化成O(n)的算法
     3.n比较小时候,插入排序比O(nlogn)的排序更有优势
     4.常用做高级排序算法在处理小样本时的优化
+    5.
 五：希尔排序 ShellSort
 
 六：归并排序 MergeSort
     1.O(nlogn)复杂度的算法,1秒之内轻松处理100万数量级的数据
-    2.MergeSort
+    2.MergeSort 自上而下，自下而上
 
-七：快速排序 QuickSort
+七：快速排序 QuickSort   Partition
+    1.标定一个元素，使前面元素都小于ta，后面元素都大于ta
+    2.递归
 
 八：堆排序 HeapSort
