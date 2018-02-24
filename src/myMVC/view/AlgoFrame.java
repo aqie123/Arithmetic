@@ -66,6 +66,9 @@ public class AlgoFrame extends JFrame{
                     }else{
                         AlgoVisHelper.setColor(g2D,AlgoVisHelper.White);
                     }
+                    if(data.path[i][j]){
+                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.Yellow);
+                    }
                     AlgoVisHelper.fillRectangle(g2D, j * w, i * h, w, h);
                 }
             }

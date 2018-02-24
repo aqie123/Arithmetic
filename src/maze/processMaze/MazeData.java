@@ -10,6 +10,14 @@ public class MazeData {
     public static final char ROAD = ' ';
     public static final char WALL = '#';
 
+    // 入口和出口横纵坐标
+    private int entranceX, entranceY;
+    private int exitX, exitY;
+    // 已经访问过得路径
+    public boolean[][] path;
+    // 点是否被访问过,拿到数据后，开空间  go 遍历时候赋值
+    public boolean[][] visited;
+
     private int N,M;
     private char[][] maze;
 
@@ -35,6 +43,9 @@ public class MazeData {
 
             // 读取后续的n行
             maze = new char[N][M];
+            visited = new boolean[N][M];
+            path = new boolean[N][M];
+
             for(int i = 0;i<N;i++){
                 String line = scanner.nextLine();
 
@@ -44,6 +55,7 @@ public class MazeData {
                 }
                 for(int j = 0;j<M;j++){
                     maze[i][j] = line.charAt(j);    // 返回指定位置的字符
+                    visited[i][j] = false;          // 显式赋值
                 }
             }
         }catch (IOException e){
@@ -54,6 +66,11 @@ public class MazeData {
                 scanner.close();
             }
         }
+        // 初始化入口和出口
+        entranceX = 1;
+        entranceY = 0;
+        exitX = N - 2;
+        exitY = M - 1;
     }
 
     public int getN() {
@@ -64,6 +81,24 @@ public class MazeData {
         return M;
     }
 
+    public int getEntranceX() {
+        return entranceX;
+    }
+
+    public int getEntranceY() {
+        return entranceY;
+    }
+
+    public int getExitX() {
+        return exitX;
+    }
+
+
+    public int getExitY() {
+        return exitY;
+    }
+
+
     public char getMaze(int i, int j){
         if(!inArea(i,j)) {
             throw new IllegalArgumentException("i or j is out of index in getMaze!");
@@ -72,7 +107,7 @@ public class MazeData {
     }
 
     // 判断坐标是否在迷宫范围里面
-    private boolean inArea(int x, int y){
+    public boolean inArea(int x, int y){
         return x >= 0 && x < N && y >= 0 && y < M;
     }
 
