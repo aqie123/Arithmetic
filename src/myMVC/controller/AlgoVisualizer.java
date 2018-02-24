@@ -1,6 +1,7 @@
 package myMVC.controller;
 
 import maze.processMaze.MazeData;
+import myMVC.model.Position;
 import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
 
@@ -9,10 +10,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Stack;
 
 
 public class AlgoVisualizer {
-    private static int DELAY = 1;
+    private static int DELAY = 30;
 
     private MazeData data;
 
@@ -42,44 +44,59 @@ public class AlgoVisualizer {
     }
 
     public void run(){
-        setData(-1,-1,false);
-        if(!go(data.getEntranceX(),data.getEntranceY())){
-            System.out.println("The maze has NO solution!");
-        }
-        setData(-1,-1,false);
-    }
+        setData(-1, -1, false);
+        Stack<Position> stack = new Stack<>();
+        Position entrance = new Position(data.getEntranceX(),data.getEntranceY());
+        stack.push(entrance);
+        data.visited[entrance.getX()][entrance.getY()] = true;
 
-    private boolean go(int x,int y){
-        if(!data.inArea(x,y)){
-            throw new IllegalArgumentException("x,y are out of index in go function!");
-        }
-        data.visited[x][y] = true;  // 已经访问过
-        setData(x,y,true);
-        // 已经找到出口
-        if(x == data.getExitX() && y == data.getExitY()){
-            return true;
-        }
-        // 对四个方向进行遍历 (从上开始,走顺时针)
-        for(int i = 0;i<4;i++){
-            int newX = x + d[i][0];
-            int newY = y + d[i][1];
-            /*  探索新的方向
-                1.保证不越界,
-                2.并且传入的新坐标是可以走的,
-                3.之前没有访问过
-             */
-            if(data.inArea(newX,newY) &&
-                    data.getMaze(newX,newY) == MazeData.ROAD &&
-                    !data.visited[newX][newY]){
-                // 如果在新坐标找到迷宫的解，返回true
-                if(go(newX,newY)){
-                    return true;
+        boolean isSolved = false;
+        while(!stack.empty()){
+            // 从栈顶取出一个位置
+            Position curPos = stack.pop();
+            // 当前取出元素绘制在路径上
+            setData(curPos.getX(),curPos.getY(),true);
+            // 是出口，找到迷宫的解
+            if(curPos.getX() == data.getExitX() && curPos.getY() == data.getExitY()){
+                isSolved = true;
+                // 通过终点找到迷宫的解
+                findPath(curPos);
+                break;
+            }
+            for(int i = 0;i < 4;i++){
+                int newX = curPos.getX() + d[i][0];
+                int newY = curPos.getY() + d[i][1];
+
+                /*
+                    没有越界
+                    没有被访问过
+                    是可以走的路
+                 */
+                if(data.inArea(newX,newY) &&
+                        !data.visited[newX][newY] &&
+                        data.getMaze(newX,newY) == MazeData.ROAD){
+                    // 记录元素从哪个元素来的
+                    stack.push(new Position(newX,newY,curPos));
+                    data.visited[newX][newY] = true;
                 }
             }
         }
-        // 回溯，将之前失败的访问路径变为白色
-        setData(x,y,false);
-        return false;
+
+        if(!isSolved){
+            System.out.println("The maze has no Solution!");
+        }
+
+        setData(-1, -1, false);
+
+    }
+
+    // 从终点开始向前找最终路径
+    private void findPath(Position des){
+        Position cur = des;
+        while (cur != null){
+            data.result[cur.getX()][cur.getY()] = true;
+            cur = cur.getPrev();
+        }
     }
 
     // 设置要绘制的数据

@@ -15,13 +15,15 @@ public class MazeData {
     private int exitX, exitY;
     // 已经访问过的路径
     public boolean[][] path;
+    private int N,M;
     // 点是否被访问过,拿到数据后，开空间  go 遍历时候赋值
     public boolean[][] visited;
 
-    // 是否是出口
-    public boolean[][] isExit;
-    private int N,M;
+
     private char[][] maze;
+
+    public boolean[][] result;
+
 
     public MazeData(String filename){
         if(filename == null){
@@ -47,6 +49,7 @@ public class MazeData {
             maze = new char[N][M];
             visited = new boolean[N][M];
             path = new boolean[N][M];
+            result = new boolean[N][M];
 
             for(int i = 0;i<N;i++){
                 String line = scanner.nextLine();
@@ -58,7 +61,6 @@ public class MazeData {
                 for(int j = 0;j<M;j++){
                     maze[i][j] = line.charAt(j);    // 返回指定位置的字符
                     visited[i][j] = false;          // 显式赋值
-                    isExit = new boolean[i][j];     // 初始化是否是出口
                 }
             }
         }catch (IOException e){
