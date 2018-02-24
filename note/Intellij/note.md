@@ -3,3 +3,5 @@
     2.找回删除文件 右键单机项目名称---->Local History---->Show History
     3.删除没用的引用  Ctrl+Alt+O
     4.自动
+    5. Could not read from remote repository
+        Settings -> Version Control -> Git -> SSH Executable
