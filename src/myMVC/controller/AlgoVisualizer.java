@@ -59,7 +59,7 @@ public class AlgoVisualizer {
         if(x == data.getExitX() && y == data.getExitY()){
             return true;
         }
-        // 对四个方向进行遍历
+        // 对四个方向进行遍历 (从上开始,走顺时针)
         for(int i = 0;i<4;i++){
             int newX = x + d[i][0];
             int newY = y + d[i][1];
