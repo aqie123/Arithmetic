@@ -10,11 +10,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Stack;
+import java.util.LinkedList;
 
 
 public class AlgoVisualizer {
-    private static int DELAY = 30;
+    private static int DELAY = 10;
 
     private MazeData data;
 
@@ -45,15 +45,18 @@ public class AlgoVisualizer {
 
     public void run(){
         setData(-1, -1, false);
-        Stack<Position> stack = new Stack<>();
+        // 使用栈  链表
+        LinkedList<Position> queue = new LinkedList<>();
         Position entrance = new Position(data.getEntranceX(),data.getEntranceY());
-        stack.push(entrance);
+        // 从队尾压入
+        queue.addLast(entrance);
         data.visited[entrance.getX()][entrance.getY()] = true;
 
         boolean isSolved = false;
-        while(!stack.empty()){
-            // 从栈顶取出一个位置
-            Position curPos = stack.pop();
+        // 队列不为空
+        while(queue.size() != 0){
+            // 从队首元素拿出一个元素
+            Position curPos = queue.pop();
             // 当前取出元素绘制在路径上
             setData(curPos.getX(),curPos.getY(),true);
             // 是出口，找到迷宫的解
@@ -63,6 +66,7 @@ public class AlgoVisualizer {
                 findPath(curPos);
                 break;
             }
+            // 对当前位置相邻四个方向进行循环
             for(int i = 0;i < 4;i++){
                 int newX = curPos.getX() + d[i][0];
                 int newY = curPos.getY() + d[i][1];
@@ -76,7 +80,7 @@ public class AlgoVisualizer {
                         !data.visited[newX][newY] &&
                         data.getMaze(newX,newY) == MazeData.ROAD){
                     // 记录元素从哪个元素来的
-                    stack.push(new Position(newX,newY,curPos));
+                    queue.addLast(new Position(newX,newY,curPos));
                     data.visited[newX][newY] = true;
                 }
             }
