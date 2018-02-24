@@ -13,11 +13,13 @@ public class MazeData {
     // 入口和出口横纵坐标
     private int entranceX, entranceY;
     private int exitX, exitY;
-    // 已经访问过得路径
+    // 已经访问过的路径
     public boolean[][] path;
     // 点是否被访问过,拿到数据后，开空间  go 遍历时候赋值
     public boolean[][] visited;
 
+    // 是否是出口
+    public boolean[][] isExit;
     private int N,M;
     private char[][] maze;
 
@@ -56,6 +58,7 @@ public class MazeData {
                 for(int j = 0;j<M;j++){
                     maze[i][j] = line.charAt(j);    // 返回指定位置的字符
                     visited[i][j] = false;          // 显式赋值
+                    isExit = new boolean[i][j];     // 初始化是否是出口
                 }
             }
         }catch (IOException e){
@@ -98,12 +101,17 @@ public class MazeData {
         return exitY;
     }
 
-
+    // 判断是否在地图里面
     public char getMaze(int i, int j){
         if(!inArea(i,j)) {
             throw new IllegalArgumentException("i or j is out of index in getMaze!");
         }
         return maze[i][j];
+    }
+
+    // 判断是否找到出口
+    public boolean isGetEntrance(int i,int j){
+        return i == exitX && j == exitY;
     }
 
     // 判断坐标是否在迷宫范围里面

@@ -69,6 +69,10 @@ public class AlgoFrame extends JFrame{
                     if(data.path[i][j]){
                         AlgoVisHelper.setColor(g2D,AlgoVisHelper.Yellow);
                     }
+                    // 注意这里数组越界
+                    /*if(data.isExit[i][j]){
+                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
+                    }*/
                     AlgoVisHelper.fillRectangle(g2D, j * w, i * h, w, h);
                 }
             }
