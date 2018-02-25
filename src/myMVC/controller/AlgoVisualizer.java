@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 import java.util.Stack;
 
 
@@ -49,19 +50,19 @@ public class AlgoVisualizer {
 
     public void run(){
         setData(-1, -1);
-        Stack<Position> stack = new Stack<>();
+        LinkedList<Position> queue = new LinkedList<>();
         Position first = new Position(data.getEntranceX(),data.getEntranceY() + 1);
-        stack.push(first);
+        queue.addLast(first);
         data.visited[first.getX()][first.getY()] = true;
-        while (!stack.empty()){
+        while (queue.size() != 0){
             // 将栈顶位置拿出来
-            Position curPos = stack.pop();
+            Position curPos = queue.pop();
             for(int i = 0;i < 4;i++){
                 int newX = curPos.getX() + d[i][0]*2;
                 int newY = curPos.getY() + d[i][1]*2;
 
                 if(data.inArea(newX,newY) && !data.visited[newX][newY]){
-                    stack.push(new Position(newX,newY));
+                    queue.addLast(new Position(newX,newY));
                     data.visited[newX][newY] = true;
                     setData(curPos.getX() + d[i][0], curPos.getY() + d[i][1]);
                 }

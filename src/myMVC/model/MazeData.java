@@ -29,12 +29,13 @@ public class MazeData {
                 }else {
                     maze[i][j] = WALL;
                 }
+                visited[i][j] = false;  // 可省略，默认false
             }
         }
         entranceX = 1;
         entranceY = 0;
         exitX = N - 2;
-        exitY = N - 1;
+        exitY = M - 1;
         maze[entranceX][entranceY] = ROAD;
         maze[exitX][exitY] = ROAD;
     }
