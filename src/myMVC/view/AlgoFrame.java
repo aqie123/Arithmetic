@@ -1,8 +1,7 @@
 package myMVC.view;
 
-import maze.processMaze.MazeData;
+import myMVC.model.MazeData;
 import myMVC.tools.AlgoVisHelper;
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,20 +60,11 @@ public class AlgoFrame extends JFrame{
             int h = canvasHeight/data.getN();
             for(int i = 0;i < data.getN();i++){
                 for(int j = 0;j < data.getM();j++){
-                    if(data.getMaze(i,j) == MazeData.WALL){
+                    if(data.maze[i][j] == MazeData.WALL){
                         AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
                     }else{
                         AlgoVisHelper.setColor(g2D,AlgoVisHelper.White);
                     }
-                    if(data.path[i][j]){
-                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.Yellow);
-                    }
-                    // 注意这里数组越界
-                    /*if(data.isExit[i][j]){
-                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.Red);
-                    }*/
-                    if(data.result[i][j])
-                        AlgoVisHelper.setColor(g2D, AlgoVisHelper.Red);
                     AlgoVisHelper.fillRectangle(g2D, j * w, i * h, w, h);
                 }
             }
