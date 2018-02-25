@@ -11,8 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
-import java.util.Stack;
 
 
 public class AlgoVisualizer {
@@ -55,6 +53,8 @@ public class AlgoVisualizer {
         Position first = new Position(data.getEntranceX(),data.getEntranceY() + 1);
         queue.add(first);
         data.visited[first.getX()][first.getY()] = true;
+        // 开启入口迷雾
+        data.openMist(first.getX(), first.getY());
         while (queue.size() != 0){
             // 将栈顶位置拿出来
             Position curPos = queue.remove();
@@ -62,9 +62,13 @@ public class AlgoVisualizer {
                 int newX = curPos.getX() + d[i][0]*2;
                 int newY = curPos.getY() + d[i][1]*2;
 
-                if(data.inArea(newX,newY) && !data.visited[newX][newY]){
+                if(data.inArea(newX,newY) &&
+                        !data.visited[newX][newY] &&
+                        data.maze[newX][newY] == MazeData.ROAD){
                     queue.add(new Position(newX,newY));
                     data.visited[newX][newY] = true;
+                    // 开启迷雾
+                    data.openMist(newX,newY);
                     setData(curPos.getX() + d[i][0], curPos.getY() + d[i][1]);
                 }
             }
