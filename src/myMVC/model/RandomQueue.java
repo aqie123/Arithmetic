@@ -1,15 +1,19 @@
 package myMVC.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class RandomQueue<E> {
-    private ArrayList<E> queue;
+    private LinkedList<E> queue;
     public RandomQueue(){
-        queue = new ArrayList<>();  // ArrayList就是动态数组
+        queue = new LinkedList<>();  // 链表
     }
 
     public void add(E e){
-        queue.add(e);
+        if(Math.random() < 0.5)
+            queue.addFirst(e);
+        else
+            queue.addLast(e);
     }
 
     public E remove(){
@@ -17,14 +21,10 @@ public class RandomQueue<E> {
             throw new IllegalArgumentException("There's no " +
                     "element to remove in Random Queue");
         }
-        // [0-queue.size())
-        int randIndex = (int)(Math.random()*queue.size());
-        E randomElement = queue.get(randIndex);
-        // 将最后一个元素赋给随机索引的位置
-        queue.set(randIndex,queue.get(queue.size() - 1));
-        // 删除最后一个元素
-        queue.remove(queue.size() - 1);
-        return randomElement;
+        if(Math.random() < 0.5)
+            return queue.removeFirst();
+        else
+            return queue.removeLast();
     }
 
     // 随机队列剩余元素
