@@ -2,6 +2,7 @@ package myMVC.controller;
 
 import myMVC.model.MazeData;
 import myMVC.model.Position;
+import myMVC.model.RandomQueue;
 import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
 
@@ -48,21 +49,21 @@ public class AlgoVisualizer {
         });
     }
 
-    public void run(){
+    private void run(){
         setData(-1, -1);
-        LinkedList<Position> queue = new LinkedList<>();
+        RandomQueue<Position> queue = new RandomQueue<>();
         Position first = new Position(data.getEntranceX(),data.getEntranceY() + 1);
-        queue.addLast(first);
+        queue.add(first);
         data.visited[first.getX()][first.getY()] = true;
         while (queue.size() != 0){
             // 将栈顶位置拿出来
-            Position curPos = queue.pop();
+            Position curPos = queue.remove();
             for(int i = 0;i < 4;i++){
                 int newX = curPos.getX() + d[i][0]*2;
                 int newY = curPos.getY() + d[i][1]*2;
 
                 if(data.inArea(newX,newY) && !data.visited[newX][newY]){
-                    queue.addLast(new Position(newX,newY));
+                    queue.add(new Position(newX,newY));
                     data.visited[newX][newY] = true;
                     setData(curPos.getX() + d[i][0], curPos.getY() + d[i][1]);
                 }
