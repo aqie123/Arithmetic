@@ -1,6 +1,7 @@
 package myMVC.controller;
 
 import myMVC.model.MazeData;
+import myMVC.model.Position;
 import myMVC.tools.AlgoVisHelper;
 import myMVC.view.AlgoFrame;
 
@@ -9,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Stack;
 
 
 public class AlgoVisualizer {
@@ -47,26 +49,27 @@ public class AlgoVisualizer {
 
     public void run(){
         setData(-1, -1);
-        go(data.getEntranceX(),data.getEntranceY() + 1);
+        Stack<Position> stack = new Stack<>();
+        Position first = new Position(data.getEntranceX(),data.getEntranceY() + 1);
+        stack.push(first);
+        data.visited[first.getX()][first.getY()] = true;
+        while (!stack.empty()){
+            // 将栈顶位置拿出来
+            Position curPos = stack.pop();
+            for(int i = 0;i < 4;i++){
+                int newX = curPos.getX() + d[i][0]*2;
+                int newY = curPos.getY() + d[i][1]*2;
+
+                if(data.inArea(newX,newY) && !data.visited[newX][newY]){
+                    stack.push(new Position(newX,newY));
+                    data.visited[newX][newY] = true;
+                    setData(curPos.getX() + d[i][0], curPos.getY() + d[i][1]);
+                }
+            }
+        }
         setData(-1, -1);
     }
 
-    private void go(int x,int y){
-        if(!data.inArea(x,y)){
-            throw new IllegalArgumentException("x,y are out " +
-                    "of index in go function!");
-        }
-        // 该点是否访问过
-        data.visited[x][y] = true;
-        for(int i = 0; i < 4; i++){
-            int newX = x + d[i][0]*2;
-            int newY = y + d[i][1]*2;
-            if(data.inArea(newX,newY) && !data.visited[newX][newY]){
-                setData(x + d[i][0],y + d[i][1]);
-                go(newX,newY);
-            }
-        }
-    }
 
     // 设置要绘制的数据
     private void setData(int x,int y){
