@@ -1,6 +1,6 @@
 package myMVC.view;
 
-import myMVC.model.MazeData;
+import myMVC.model.MineSweeperData;
 import myMVC.tools.AlgoVisHelper;
 
 import javax.swing.*;
@@ -34,8 +34,8 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private MazeData data;
-    public void render(MazeData data){
+    private MineSweeperData data;
+    public void render(MineSweeperData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
@@ -55,24 +55,33 @@ public class AlgoFrame extends JFrame{
             hints.put(RenderingHints.KEY_RENDERING,
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
-            // todo 绘制所要的数据
+            // todo 绘制雷区面板
             int w = canvasWidth/data.getM();
             int h = canvasHeight/data.getN();
-            for(int i = 0;i < data.getN();i++){
+            for (int i = 0;i < data.getN();i++){
                 for(int j = 0;j < data.getM();j++){
-                    if(data.inMist[i][j]){
-                        AlgoVisHelper.setColor(g2D, AlgoVisHelper.Black);
-                    }else{
-                        if(data.maze[i][j] == MazeData.WALL){
-                            AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
-                        }else{
-                            AlgoVisHelper.setColor(g2D,AlgoVisHelper.White);
+                    // 用户点开,是雷，显示雷区图标,不是雷，显示周围雷数(雷数是0)
+                    // 则显示凹进去方块
+                    if(data.open[i][j]){
+                        if(data.isMine(i, j)){
+                            AlgoVisHelper.putImage(g2D, j*w, i*h,
+                                    MineSweeperData.mineImageURL);
+                        }else {
+                            AlgoVisHelper.putImage(g2D, j * w, i * h,
+                                    MineSweeperData.numberImageURL(data.getNumber(i, j)));
                         }
-                        if(data.path[i][j]) {
-                            AlgoVisHelper.setColor(g2D, AlgoVisHelper.Yellow);
+                    }else{
+                        // 未点开,如果标记，显示旗子，未标记正常显示
+                        if(data.flags[i][j]){
+                            AlgoVisHelper.putImage(g2D, j*w, i*h,
+                                    MineSweeperData.flagImageURL);
+                        }
+                        else{
+                            AlgoVisHelper.putImage(g2D, j*w, i*h,
+                                    MineSweeperData.blockImageURL);
                         }
                     }
-                    AlgoVisHelper.fillRectangle(g2D, j * w, i * h, w, h);
+
                 }
             }
         }
