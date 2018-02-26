@@ -55,6 +55,13 @@ public class AlgoVisualizer {
     private void setData(boolean isLeftClicked,int x,int y){
         if(data.inArea(x, y)) {
             if(isLeftClicked){
+                if(data.isMine(x,y)){
+                    // todo Game Over
+                    data.open[x][y] = true;
+                    System.out.print(" Game Over");
+                }else{      // 点击位置不是雷
+                    data.open(x,y);
+                }
                 data.open[x][y] = true;
             }else{
                 data.flags[x][y] = !data.flags[x][y];

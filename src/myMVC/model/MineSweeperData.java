@@ -152,4 +152,35 @@ public class MineSweeperData {
             }
         }
     }
+
+    // FloodFill（洪水填充 ）算法
+    public void open(int x, int y){
+        if(!inArea(x,y)){
+            throw new IllegalArgumentException("Out of " +
+                    "index in open function!");
+        }
+
+        if(isMine(x,y)){
+            throw new IllegalArgumentException("Cannot " +
+                    "open an mine block in open function.");
+        }
+
+        open[x][y] = true;
+        if(getNumber(x,y) == 0){
+            // 对周围八个方向遍历
+            for(int i = x-1;i <= x+1;i++){
+                for(int j = y-1;j<= y+1;j++){
+                    if(inArea(i,j) && !open[i][j] && !isMine(i,j)){
+                        open(i,j);
+                    }
+                }
+            }
+        }
+
+        if (numbers[x][y] > 0){
+            return;
+        }
+    }
+
+
 }

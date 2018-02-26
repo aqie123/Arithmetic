@@ -2,6 +2,7 @@
   <dictionary name="Administrator">
     <words>
       <w>algo</w>
+      <w>floodfill</w>
       <w>nlogn</w>
     </words>
   </dictionary>
