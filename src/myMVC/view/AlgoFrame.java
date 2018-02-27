@@ -82,18 +82,19 @@ public class AlgoFrame extends JFrame{
             for (int i = 0;i < showBoard.getN();i++){
                 for(int j = 0;j < showBoard.getM();j++){
                     char c = showBoard.getData(i,j);
+
                     if(c != Board.EMPTY){
-                        if(c != Board.EMPTY){
-                            if(!colorMap.containsKey(c)){
-                                int sz = colorMap.size();
-                                colorMap.put(c,colorList.get(sz));
-                            }
-                            Color color = colorMap.get(c);
-                            AlgoVisHelper.setColor(g2D,color);
-                            AlgoVisHelper.fillRectangle(g2D,j*h+2,
-                                    i*w+2,w-4,h-4);
+                        // 新添加字符不对应某一个颜色，使其对应一个颜色
+                        if(!colorMap.containsKey(c)){
+                            int sz = colorMap.size();
+                            colorMap.put(c,colorList.get(sz));
                         }
+                        Color color = colorMap.get(c);
+                        AlgoVisHelper.setColor(g2D,color);
+                        AlgoVisHelper.fillRectangle(g2D,j*h+2,
+                                i*w+2,w-4,h-4);
                     }
+
                 }
             }
         }

@@ -40,6 +40,7 @@ public class AlgoVisualizer {
         });
     }
 
+    // 编写自动求解过程
     private void run(){
        setData();
     }
