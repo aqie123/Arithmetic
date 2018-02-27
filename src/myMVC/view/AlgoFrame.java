@@ -1,10 +1,13 @@
 package myMVC.view;
 
-import myMVC.model.MineSweeperData;
+import myMVC.model.Board;
+import myMVC.model.GameData;
 import myMVC.tools.AlgoVisHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AlgoFrame extends JFrame{
     private int canvasWidth;
@@ -34,16 +37,32 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private MineSweeperData data;
-    public void render(MineSweeperData data){
+    private GameData data;
+    public void render(GameData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
 
     // 具体绘制代码
     private class AlgoCanvas extends JPanel{
+        private ArrayList<Color> colorList;
+        private HashMap<Character,Color> colorMap;
+
         public AlgoCanvas(){
             super(true);
+            colorList = new ArrayList<Color>();
+            colorList.add(AlgoVisHelper.Red);
+            colorList.add(AlgoVisHelper.Purple);
+            colorList.add(AlgoVisHelper.Blue);
+            colorList.add(AlgoVisHelper.Teal);
+            colorList.add(AlgoVisHelper.LightGreen);
+            colorList.add(AlgoVisHelper.Lime);
+            colorList.add(AlgoVisHelper.Amber);
+            colorList.add(AlgoVisHelper.DeepOrange);
+            colorList.add(AlgoVisHelper.Brown);
+            colorList.add(AlgoVisHelper.BlueGrey);
+
+            colorMap = new HashMap<>();
         }
         @Override   // 绘制组件
         public void paintComponent(Graphics g) {
@@ -55,33 +74,26 @@ public class AlgoFrame extends JFrame{
             hints.put(RenderingHints.KEY_RENDERING,
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
-            // todo 绘制雷区面板
-            int w = canvasWidth/data.getM();
-            int h = canvasHeight/data.getN();
-            for (int i = 0;i < data.getN();i++){
-                for(int j = 0;j < data.getM();j++){
-                    // 用户点开,是雷，显示雷区图标,不是雷，显示周围雷数(雷数是0)
-                    // 则显示凹进去方块
-                    if(data.open[i][j]){
-                        if(data.isMine(i, j)){
-                            AlgoVisHelper.putImage(g2D, j*w, i*h,
-                                    MineSweeperData.mineImageURL);
-                        }else {
-                            AlgoVisHelper.putImage(g2D, j * w, i * h,
-                                    MineSweeperData.numberImageURL(data.getNumber(i, j)));
-                        }
-                    }else{
-                        // 未点开,如果标记，显示旗子，未标记正常显示
-                        if(data.flags[i][j]){
-                            AlgoVisHelper.putImage(g2D, j*w, i*h,
-                                    MineSweeperData.flagImageURL);
-                        }
-                        else{
-                            AlgoVisHelper.putImage(g2D, j*w, i*h,
-                                    MineSweeperData.blockImageURL);
+            // todo paint board
+            int w = canvasWidth/data.getM();    // 宽
+            int h = canvasHeight/data.getN();   // 高
+
+            Board showBoard = data.getShowBoard();
+            for (int i = 0;i < showBoard.getN();i++){
+                for(int j = 0;j < showBoard.getM();j++){
+                    char c = showBoard.getData(i,j);
+                    if(c != Board.EMPTY){
+                        if(c != Board.EMPTY){
+                            if(!colorMap.containsKey(c)){
+                                int sz = colorMap.size();
+                                colorMap.put(c,colorList.get(sz));
+                            }
+                            Color color = colorMap.get(c);
+                            AlgoVisHelper.setColor(g2D,color);
+                            AlgoVisHelper.fillRectangle(g2D,j*h+2,
+                                    i*w+2,w-4,h-4);
                         }
                     }
-
                 }
             }
         }
