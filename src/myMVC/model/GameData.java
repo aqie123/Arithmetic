@@ -49,4 +49,44 @@ public class GameData {
     public boolean inArea(int x, int y){
         return x >= 0 && x < N && y >= 0 && y < M;
     }
+
+    public boolean solve(){
+        if(maxTurn <= 0){
+            return false;
+        }
+        return solve(new Board(starterBoard),maxTurn);
+    }
+    private static int d[][] = {{-1,0},{0,1},{0,-1}};
+
+    private boolean solve(Board board,int turn){
+        if(board == null) {
+            throw new IllegalArgumentException("board can not be null in solve function!");
+        }
+
+        if(turn == 0) {
+            return board.isWin();
+        }
+
+        if(board.isWin()) {
+            return true;
+        }
+        for(int x = 0;x < N;x++){
+            for(int y = 0;y < M;y++){
+                if(board.getData(x,y) != Board.EMPTY){
+                    for (int i = 0;i < 3;i++){
+                        int newX = x + d[i][0];
+                        int newY = y + d[i][1];
+                        if(inArea(newX,newY)){
+                            Board nextBoard = new Board(board);
+                            nextBoard.swap(x, y, newX, newY);
+                            nextBoard.run();
+                            if(solve(nextBoard, turn-1))
+                                return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

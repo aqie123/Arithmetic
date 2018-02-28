@@ -43,6 +43,12 @@ public class AlgoVisualizer {
     // 编写自动求解过程
     private void run(){
        setData();
+       if(data.solve()){
+           System.out.println("The game has a solution!");
+       }else{
+           System.out.println("The game does NOT have a solution.");
+       }
+       setData();
     }
 
     // 设置要绘制的数据
