@@ -12,6 +12,12 @@ public class GameData {
     private Board starterBoard;
     private Board showBoard;
 
+    public int clickx = -1, clicky = -1;
+
+    /**
+     *  读取文件中格子数据
+     * @param filename
+     */
     public GameData(String filename){
         if(filename == null) {
             throw new IllegalArgumentException("Filename cannot be null!");
