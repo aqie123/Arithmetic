@@ -4,9 +4,9 @@ import myMVC.controller.AlgoVisualizer;
 
 public class App {
     public static void main(String[] args) {
-        // 模拟方块
-        // java.lang.String fileName = "src/resources/boston_09.txt";
-        java.lang.String fileName = "src/resources/21.txt";
-        AlgoVisualizer vis = new AlgoVisualizer(fileName);
+        // 分形图
+        int sceneWidth = 800;
+        int sceneHeight = 800;
+        AlgoVisualizer vis = new AlgoVisualizer(sceneWidth,sceneHeight);
     }
 }

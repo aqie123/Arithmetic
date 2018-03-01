@@ -1,7 +1,6 @@
 package myMVC.view;
 
-import myMVC.model.Board;
-import myMVC.model.GameData;
+import myMVC.model.CircleData;
 import myMVC.tools.AlgoVisHelper;
 
 import javax.swing.*;
@@ -37,8 +36,8 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private GameData data;
-    public void render(GameData data){
+    private CircleData data;
+    public void render(CircleData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
@@ -74,40 +73,21 @@ public class AlgoFrame extends JFrame{
             hints.put(RenderingHints.KEY_RENDERING,
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
-            // todo paint board
-            int w = canvasWidth/data.getM();    // 宽
-            int h = canvasHeight/data.getN();   // 高
+            // todo 绘制分形图
+            drawCircle(g2D,data.getStartX(),data.getStartY(),data.getStartR(),0);
+        }
 
-            Board showBoard = data.getShowBoard();
-            for (int i = 0;i < showBoard.getN();i++){
-                for(int j = 0;j < showBoard.getM();j++){
-                    char c = showBoard.getData(i,j);
-
-                    if(c != Board.EMPTY){
-                        // 新添加字符不对应某一个颜色，使其对应一个颜色
-                        if(!colorMap.containsKey(c)){
-                            int sz = colorMap.size();
-                            colorMap.put(c,colorList.get(sz));
-                        }
-                        Color color = colorMap.get(c);
-                        AlgoVisHelper.setColor(g2D,color);
-                        AlgoVisHelper.fillRectangle(g2D,j*h+2,
-                                i*w+2,w-4,h-4);
-
-                        // 窗口绘制，添加文字坐标
-                        AlgoVisHelper.setColor(g2D, AlgoVisHelper.White);
-                        String text = String.format("( %d , %d )", i, j);
-                        AlgoVisHelper.drawText(g2D, text, j*h + h/2, i*w + w/2);
-                    }
-                    if(i == data.clickx && j == data.clicky){
-                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
-                        AlgoVisHelper.setStrokeWidth(g2D,4);
-                        AlgoVisHelper.strokeRectangle(g2D, j * h + 2, i * w + 2,
-                                w - 4, h - 4);
-                    }
-
-                }
+        private void drawCircle(Graphics2D g,int x,int y,int r,int depth){
+            if(depth == data.getDepth() || r < 1){
+                return;
             }
+            if(depth%2 == 0){
+                AlgoVisHelper.setColor(g,AlgoVisHelper.Red);
+            }else{
+                AlgoVisHelper.setColor(g,AlgoVisHelper.LightBlue);
+            }
+            AlgoVisHelper.fillCircle(g,x,y,r);
+            drawCircle(g,x,y,r-data.getStep(),depth+1);
         }
 
 
