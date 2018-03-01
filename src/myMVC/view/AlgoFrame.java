@@ -99,6 +99,12 @@ public class AlgoFrame extends JFrame{
                         String text = String.format("( %d , %d )", i, j);
                         AlgoVisHelper.drawText(g2D, text, j*h + h/2, i*w + w/2);
                     }
+                    if(i == data.clickx && j == data.clicky){
+                        AlgoVisHelper.setColor(g2D,AlgoVisHelper.LightBlue);
+                        AlgoVisHelper.setStrokeWidth(g2D,4);
+                        AlgoVisHelper.strokeRectangle(g2D, j * h + 2, i * w + 2,
+                                w - 4, h - 4);
+                    }
 
                 }
             }

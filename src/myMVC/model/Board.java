@@ -176,4 +176,32 @@ public class Board {
         }
         System.out.println(swapString);
     }
+
+    @Override
+    public int hashCode() {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i < data.length;i++){
+            sb.append(data[i]);
+        }
+        return sb.toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Board)){
+            return false;
+        }
+        if(obj == this){
+            return true;
+        }
+        Board anotherBoard = (Board) obj;
+        for(int i = 0;i < N;i++){
+            for(int j = 0;j < M;i++){
+                if(this.data[i][j] != anotherBoard.data[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class GameData {
@@ -11,6 +12,7 @@ public class GameData {
     private int N, M;
     private Board starterBoard;
     private Board showBoard;
+    private HashSet<Board> searchedBoards;
 
     public int clickx = -1, clicky = -1;
 
@@ -38,6 +40,7 @@ public class GameData {
             this.M = starterBoard.getM();
             starterBoard.print();
             showBoard = new Board(starterBoard);        // 根据现有面板生成新面板
+            searchedBoards = new HashSet<Board>();
         }catch (IOException e){
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -60,7 +63,12 @@ public class GameData {
         if(maxTurn <= 0){
             return false;
         }
-        return solve(new Board(starterBoard),maxTurn);
+        long startTime = System.currentTimeMillis();
+        searchedBoards.add(starterBoard);
+        boolean ret = solve(new Board(starterBoard),maxTurn);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Time : " + (endTime-startTime) + "ms" );
+        return ret;
     }
     // 下 右 左
     private static int d[][] = {{1,0},{0,1},{0,-1}};
@@ -96,10 +104,14 @@ public class GameData {
                             Board nextBoard = new Board(board,board,swapString);
                             nextBoard.swap(x, y, newX, newY);
                             nextBoard.run();
-                            // 回溯求解
-                            if(solve(nextBoard, turn-1)) {
-                                return true;
+                            if(!searchedBoards.contains(nextBoard)){
+                                searchedBoards.add(nextBoard);// 回溯求解
+                                if(solve(nextBoard, turn-1)) {
+                                    return true;
+                                }
+
                             }
+
                         }
                     }
                 }
