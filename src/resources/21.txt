@@ -1,0 +1,8 @@
+2
+..D..
+.CAE.
+.ECE.
+.EAA.
+.ABE.
+.BED.
+AABCD

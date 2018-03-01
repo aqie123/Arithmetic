@@ -93,6 +93,11 @@ public class AlgoFrame extends JFrame{
                         AlgoVisHelper.setColor(g2D,color);
                         AlgoVisHelper.fillRectangle(g2D,j*h+2,
                                 i*w+2,w-4,h-4);
+
+                        // 窗口绘制，添加文字坐标
+                        AlgoVisHelper.setColor(g2D, AlgoVisHelper.White);
+                        String text = String.format("( %d , %d )", i, j);
+                        AlgoVisHelper.drawText(g2D, text, j*h + h/2, i*w + w/2);
                     }
 
                 }

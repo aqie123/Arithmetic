@@ -56,8 +56,16 @@ public class GameData {
         }
         return solve(new Board(starterBoard),maxTurn);
     }
-    private static int d[][] = {{-1,0},{0,1},{0,-1}};
+    // 下 右 左
+    private static int d[][] = {{1,0},{0,1},{0,-1}};
 
+    /**
+     *
+     * @param board  通过盘面board
+     * @param turn   使用turn次move
+     * @return       解决move the box
+     * 成功解决,返回true,反之返回false
+     */
     private boolean solve(Board board,int turn){
         if(board == null) {
             throw new IllegalArgumentException("board can not be null in solve function!");
@@ -77,11 +85,15 @@ public class GameData {
                         int newX = x + d[i][0];
                         int newY = y + d[i][1];
                         if(inArea(newX,newY)){
-                            Board nextBoard = new Board(board);
+                            String swapString = String.format("swap (%d, %d) and (%d, %d)",
+                                    x, y, newX, newY);
+                            Board nextBoard = new Board(board,board,swapString);
                             nextBoard.swap(x, y, newX, newY);
                             nextBoard.run();
-                            if(solve(nextBoard, turn-1))
+                            // 回溯求解
+                            if(solve(nextBoard, turn-1)) {
                                 return true;
+                            }
                         }
                     }
                 }
