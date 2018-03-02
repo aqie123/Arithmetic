@@ -6,6 +6,7 @@ public class App {
     public static void main(String[] args) {
         // 分形图
         int maxDepth = 9;
-        AlgoVisualizer vis = new AlgoVisualizer(maxDepth);
+        int side = 300;
+        AlgoVisualizer vis = new AlgoVisualizer(maxDepth,side);
     }
 }

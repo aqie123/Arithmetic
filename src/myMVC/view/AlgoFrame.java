@@ -56,53 +56,41 @@ public class AlgoFrame extends JFrame{
             hints.put(RenderingHints.KEY_RENDERING,
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
-            // todo 绘制分形图
 
-            drawSierpinskiTriangle(g2D,0,canvasHeight,canvasWidth,0);
+            // todo  draw Koch Snowflake
+            drawFractal(g2D, 0, canvasHeight-3, canvasWidth, 0, 0);
         }
 
+        private void drawFractal(Graphics2D g, double x1, double y1, double side, double angle, int depth){
 
-        /**
-         * 绘制三角形 逆时针 A,B,C
-         * @param g
-         * @param Ax        A横坐标
-         * @param Ay        A纵坐标
-         * @param side      A边长
-         * @param depth     递归深度
-         */
-        private void drawSierpinskiTriangle(Graphics2D g,int Ax,int Ay,int side,int depth){
-            // 递归到底
-            if(side <= 1){
+            if(side <= 0)
+                return;
+
+            if( depth == data.getDepth()){
+                double x2 = x1 + side * Math.cos(angle*Math.PI/180.0);
+                double y2 = y1 - side * Math.sin(angle*Math.PI/180.0);
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g, Ax, Ay, 1, 1);
+                AlgoVisHelper.drawLine(g, x1, y1, x2, y2);
                 return;
             }
 
-            int Bx = Ax + side;
-            int By = Ay;
-            int h = (int)(Math.sin(60.0*Math.PI/180.0) * side);
-            int Cx = Ax + side/2;
-            int Cy = Ay - h;
+            double side_3 = side / 3;
 
-            // 递归到底,当前递归深度达到用户指定递归深度
-            if(depth == data.getDepth()){
-                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillTriangle(g, Ax, Ay, Bx, By, Cx, Cy);
-                return;
-            }
+            double x2 = x1 + side_3 * Math.cos(angle*Math.PI/180.0);
+            double y2 = y1 - side_3 * Math.sin(angle*Math.PI/180.0);
+            drawFractal(g, x1, y1, side_3, angle, depth+1);
 
-            int AB_centerx = (Ax + Bx)/2;
-            int AB_centery = (Ay + By)/2;
+            double x3 = x2 + side_3 * Math.cos((angle+60.0)*Math.PI/180.0);
+            double y3 = y2 - side_3 * Math.sin((angle+60.0)*Math.PI/180.0);
+            drawFractal(g, x2, y2, side_3, angle+60.0, depth+1);
 
-            int AC_centerx = (Ax+Cx)/2;
-            int AC_centery = (Ay+Cy)/2;
+            double x4 = x3 + side_3 * Math.cos((angle-60.0)*Math.PI/180.0);
+            double y4 = y3 - side_3 * Math.sin((angle-60.0)*Math.PI/180.0);
+            drawFractal(g, x3, y3, side_3, angle-60.0, depth+1);
 
-            int BC_centerx = (Bx+Cx)/2;
-            int BC_centery = (By+Cy)/2;
-
-            drawSierpinskiTriangle(g, Ax, Ay, side/2, depth+1);
-            drawSierpinskiTriangle(g, AC_centerx, AC_centery, side/2, depth+1);
-            drawSierpinskiTriangle(g, AB_centerx, AB_centery, side/2, depth+1);
+            double x5 = x4 + side_3 * Math.cos(angle*Math.PI/180.0);
+            double y5 = y4 - side_3 * Math.sin(angle*Math.PI/180.0);
+            drawFractal(g, x4, y4, side_3, angle, depth+1);
 
         }
 

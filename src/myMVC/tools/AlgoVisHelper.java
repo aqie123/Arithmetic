@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -90,6 +91,7 @@ public class AlgoVisHelper {
         g.drawString(text, centerx - w/2, centery + h);
     }
 
+    // 绘制三角形
     public static void fillTriangle(Graphics2D g, int x1, int y1, int x2,
                                     int y2, int x3, int y3){
         GeneralPath path = new GeneralPath();
@@ -99,5 +101,11 @@ public class AlgoVisHelper {
         path.closePath();
 
         g.fill(path);
+    }
+
+    // 绘制线段
+    public static void drawLine(Graphics2D g, double x1, double y1, double x2, double y2){
+        Line2D line = new Line2D.Double(x1, y1, x2, y2);
+        g.draw(line);
     }
 }

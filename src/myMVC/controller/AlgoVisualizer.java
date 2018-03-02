@@ -22,14 +22,15 @@ public class AlgoVisualizer {
     // todo 设置自定义变量
 
     // 传入最大深度,保持窗口不变
-    public AlgoVisualizer(int maxDepth){
+    public AlgoVisualizer(int depth, int side){
         // todo 初始化数据
-        data = new FractalData(maxDepth);
-        int screenWidth = (int)Math.pow(2,maxDepth);
-        int screenHeight = (int)Math.pow(2,maxDepth);
+        data = new FractalData(depth);
+        // int screenWidth = (int)Math.pow(2,maxDepth);
+        int screenWidth = 3 * side + 3;
+        int screenHeight = side;
         // 初始化视图frame
         EventQueue.invokeLater(() -> {
-            frame = new AlgoFrame("Vicsek Gractal 分形图绘制",
+            frame = new AlgoFrame("Koch Snowflake 分形图绘制",
                     screenWidth, screenHeight);
             // TODO: 根据情况决定是否加入键盘鼠标事件监听器
             frame.addKeyListener(new AlgoKeyListener());
