@@ -57,9 +57,11 @@ public class AlgoFrame extends JFrame{
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
             // todo 绘制分形图
-            drawFractal(g2D,0,0,canvasWidth,canvasHeight,0);
+            // drawFractal(g2D,0,0,canvasWidth,canvasHeight,0);
+            drawSierpinski(g2D,0,0,canvasWidth,canvasHeight,0);
         }
 
+        // Vicsek Gractal 分形
         private void drawFractal(Graphics2D g,int x,int y,int w,int h,int depth){
             int w_3 = w/3;
             int h_3 = h/3;
@@ -80,6 +82,37 @@ public class AlgoFrame extends JFrame{
             drawFractal(g,x+w_3,y+w_3,w_3,h_3,depth + 1);
             drawFractal(g,x,y+2*w_3,w_3,h_3,depth + 1);
             drawFractal(g,x+2*w_3,y+2*w_3,w_3,h_3,depth + 1);
+        }
+
+        // Sierpinski 分形绘制
+        private void drawSierpinski(Graphics2D g,int x,int y,int w,int h,int depth){
+            int w_3 = w/3;
+            int h_3 = h/3;
+
+            if(w_3 <= 0 || h_3 <= 0){
+                return;
+            }
+            // 分形到底,绘制中间矩形
+            if(depth == data.getDepth()){
+                AlgoVisHelper.setColor(g,AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillRectangle(g,x + w_3,y + w_3,w_3,h_3);
+                return;
+            }
+
+            /**
+             * 中间的格子填实
+             * 其他递归调用绘制过程
+             */
+            for(int i = 0; i < 3;i++){
+                for(int j = 0; j < 3;j++){
+                    if(i == 1 && j == 1){
+                        AlgoVisHelper.setColor(g,AlgoVisHelper.Indigo);
+                        AlgoVisHelper.fillRectangle(g,x + w_3,y + w_3,w_3,h_3);
+                    }else{
+                        drawSierpinski(g,x+i*w_3,y+j*h_3,w_3,h_3,depth+1);
+                    }
+                }
+            }
         }
 
 
