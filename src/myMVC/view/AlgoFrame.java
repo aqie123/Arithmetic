@@ -57,62 +57,53 @@ public class AlgoFrame extends JFrame{
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
             // todo 绘制分形图
-            // drawFractal(g2D,0,0,canvasWidth,canvasHeight,0);
-            drawSierpinski(g2D,0,0,canvasWidth,canvasHeight,0);
+
+            drawSierpinskiTriangle(g2D,0,canvasHeight,canvasWidth,0);
         }
 
-        // Vicsek Gractal 分形
-        private void drawFractal(Graphics2D g,int x,int y,int w,int h,int depth){
-            int w_3 = w/3;
-            int h_3 = h/3;
 
-            if(w_3 <= 0 || h_3 <= 0){
+        /**
+         * 绘制三角形 逆时针 A,B,C
+         * @param g
+         * @param Ax        A横坐标
+         * @param Ay        A纵坐标
+         * @param side      A边长
+         * @param depth     递归深度
+         */
+        private void drawSierpinskiTriangle(Graphics2D g,int Ax,int Ay,int side,int depth){
+            // 递归到底
+            if(side <= 1){
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g, x, y, 1, 1);
+                AlgoVisHelper.fillRectangle(g, Ax, Ay, 1, 1);
                 return;
             }
+
+            int Bx = Ax + side;
+            int By = Ay;
+            int h = (int)(Math.sin(60.0*Math.PI/180.0) * side);
+            int Cx = Ax + side/2;
+            int Cy = Ay - h;
+
+            // 递归到底,当前递归深度达到用户指定递归深度
             if(depth == data.getDepth()){
-                AlgoVisHelper.setColor(g,AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g,x,y,w,h);
+                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillTriangle(g, Ax, Ay, Bx, By, Cx, Cy);
                 return;
             }
 
-            drawFractal(g,x,y,w_3,h_3,depth + 1);
-            drawFractal(g,x+2*w_3,y,w_3,h_3,depth + 1);
-            drawFractal(g,x+w_3,y+w_3,w_3,h_3,depth + 1);
-            drawFractal(g,x,y+2*w_3,w_3,h_3,depth + 1);
-            drawFractal(g,x+2*w_3,y+2*w_3,w_3,h_3,depth + 1);
-        }
+            int AB_centerx = (Ax + Bx)/2;
+            int AB_centery = (Ay + By)/2;
 
-        // Sierpinski 分形绘制
-        private void drawSierpinski(Graphics2D g,int x,int y,int w,int h,int depth){
-            int w_3 = w/3;
-            int h_3 = h/3;
+            int AC_centerx = (Ax+Cx)/2;
+            int AC_centery = (Ay+Cy)/2;
 
-            if(w_3 <= 0 || h_3 <= 0){
-                return;
-            }
-            // 分形到底,绘制中间矩形
-            if(depth == data.getDepth()){
-                AlgoVisHelper.setColor(g,AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g,x + w_3,y + w_3,w_3,h_3);
-                return;
-            }
+            int BC_centerx = (Bx+Cx)/2;
+            int BC_centery = (By+Cy)/2;
 
-            /**
-             * 中间的格子填实
-             * 其他递归调用绘制过程
-             */
-            for(int i = 0; i < 3;i++){
-                for(int j = 0; j < 3;j++){
-                    if(i == 1 && j == 1){
-                        AlgoVisHelper.setColor(g,AlgoVisHelper.Indigo);
-                        AlgoVisHelper.fillRectangle(g,x + w_3,y + w_3,w_3,h_3);
-                    }else{
-                        drawSierpinski(g,x+i*w_3,y+j*h_3,w_3,h_3,depth+1);
-                    }
-                }
-            }
+            drawSierpinskiTriangle(g, Ax, Ay, side/2, depth+1);
+            drawSierpinskiTriangle(g, AC_centerx, AC_centery, side/2, depth+1);
+            drawSierpinskiTriangle(g, AB_centerx, AB_centery, side/2, depth+1);
+
         }
 
 

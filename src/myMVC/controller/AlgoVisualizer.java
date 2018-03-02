@@ -25,8 +25,8 @@ public class AlgoVisualizer {
     public AlgoVisualizer(int maxDepth){
         // todo 初始化数据
         data = new FractalData(maxDepth);
-        int screenWidth = (int)Math.pow(3,maxDepth);
-        int screenHeight = (int)Math.pow(3,maxDepth);
+        int screenWidth = (int)Math.pow(2,maxDepth);
+        int screenHeight = (int)Math.pow(2,maxDepth);
         // 初始化视图frame
         EventQueue.invokeLater(() -> {
             frame = new AlgoFrame("Vicsek Gractal 分形图绘制",
