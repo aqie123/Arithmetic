@@ -5,4 +5,4 @@
     3. Sierpinski 分形绘制 九宫格
     4. SierpinskiTriangle 绘制三角形
     5. Koch Snowflake雪花分形
-    6. 分形绘制树
+    6. 分形绘制树:下半部分不变,上半部分分叉
