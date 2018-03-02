@@ -1,12 +1,10 @@
 package myMVC.view;
 
-import myMVC.model.CircleData;
+import myMVC.model.FractalData;
 import myMVC.tools.AlgoVisHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AlgoFrame extends JFrame{
     private int canvasWidth;
@@ -36,32 +34,17 @@ public class AlgoFrame extends JFrame{
     public int getCanvasWidth() { return canvasWidth;}
 
     // todo 设置自己的数据
-    private CircleData data;
-    public void render(CircleData data){
+    private FractalData data;
+    public void render(FractalData data){
         this.data = data;
         repaint();      // 将所有控件重新刷新(也会清空画布)
     }
 
     // 具体绘制代码
     private class AlgoCanvas extends JPanel{
-        private ArrayList<Color> colorList;
-        private HashMap<Character,Color> colorMap;
 
         public AlgoCanvas(){
             super(true);
-            colorList = new ArrayList<Color>();
-            colorList.add(AlgoVisHelper.Red);
-            colorList.add(AlgoVisHelper.Purple);
-            colorList.add(AlgoVisHelper.Blue);
-            colorList.add(AlgoVisHelper.Teal);
-            colorList.add(AlgoVisHelper.LightGreen);
-            colorList.add(AlgoVisHelper.Lime);
-            colorList.add(AlgoVisHelper.Amber);
-            colorList.add(AlgoVisHelper.DeepOrange);
-            colorList.add(AlgoVisHelper.Brown);
-            colorList.add(AlgoVisHelper.BlueGrey);
-
-            colorMap = new HashMap<>();
         }
         @Override   // 绘制组件
         public void paintComponent(Graphics g) {
@@ -74,20 +57,29 @@ public class AlgoFrame extends JFrame{
                     RenderingHints.VALUE_RENDER_QUALITY);
             g2D.addRenderingHints(hints);
             // todo 绘制分形图
-            drawCircle(g2D,data.getStartX(),data.getStartY(),data.getStartR(),0);
+            drawFractal(g2D,0,0,canvasWidth,canvasHeight,0);
         }
 
-        private void drawCircle(Graphics2D g,int x,int y,int r,int depth){
-            if(depth == data.getDepth() || r < 1){
+        private void drawFractal(Graphics2D g,int x,int y,int w,int h,int depth){
+            int w_3 = w/3;
+            int h_3 = h/3;
+
+            if(w_3 <= 0 || h_3 <= 0){
+                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillRectangle(g, x, y, 1, 1);
                 return;
             }
-            if(depth%2 == 0){
-                AlgoVisHelper.setColor(g,AlgoVisHelper.Red);
-            }else{
-                AlgoVisHelper.setColor(g,AlgoVisHelper.LightBlue);
+            if(depth == data.getDepth()){
+                AlgoVisHelper.setColor(g,AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillRectangle(g,x,y,w,h);
+                return;
             }
-            AlgoVisHelper.fillCircle(g,x,y,r);
-            drawCircle(g,x,y,r-data.getStep(),depth+1);
+
+            drawFractal(g,x,y,w_3,h_3,depth + 1);
+            drawFractal(g,x+2*w_3,y,w_3,h_3,depth + 1);
+            drawFractal(g,x+w_3,y+w_3,w_3,h_3,depth + 1);
+            drawFractal(g,x,y+2*w_3,w_3,h_3,depth + 1);
+            drawFractal(g,x+2*w_3,y+2*w_3,w_3,h_3,depth + 1);
         }
 
 
